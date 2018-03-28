@@ -1,4 +1,4 @@
-let persuasionEncounter = (heroes, enemies) => {
+const persuasionEncounter = (heroes, enemies) => {
 	let persuasionBarrier = 0;
 	let persuasionPower = 0;
 
@@ -13,7 +13,7 @@ let persuasionEncounter = (heroes, enemies) => {
 	return persuasionPower >= persuasionBarrier;
 };
 
-let sneakEncounter = (heroes, enemies) => {
+const sneakEncounter = (heroes, enemies) => {
 	let sneakBarrier = 0;
 	let sneakPower = 0;
 
@@ -56,7 +56,7 @@ const fightEncounter = (heroes, enemies, heroesFirst) => {
 
 function teamAttack(attackers, defenders) {
 	let totalIncapacitated = 0;
-	const totalAvailableDefenders = 0;
+	let totalAvailableDefenders = 0;
 
 	defenders.forEach(defender => {
 		if(!defender.isIncapacitated) {
@@ -83,7 +83,7 @@ function teamAttack(attackers, defenders) {
 			let damage = attacker.dealDamage();
 
 			target.currentHealth -= damage;
-			console.log(`${attacker.name} (${attacker.currentHealth}) hit ${target.name} (${target.currentHealth})`);
+			console.log(`${attacker.name} (${attacker.currentHealth}) hit ${target.name} (${target.currentHealth}) dealing ${damage} damage!`);
 
 			if(target.currentHealth <= 0) {
 				console.log(`${target.name} is incapacitated`);
@@ -99,14 +99,36 @@ function teamAttack(attackers, defenders) {
 	return totalIncapacitated;
 };
 
-const riffleEncounter = () => {
+const decisionMaker = (answer) => {
+	let lowerAnswer = answer.toLowerCase();
+
+	let result;
+
+	switch(lowerAnswer) {
+		case `attack`:
+			result = fightEncounter(heroParty, enemies, true);
+			break;
+		case `sneak`:
+			result = sneakEncounter(heroParty, enemies);
+			break;
+		case `persuade`:
+			result = persuasionEncounter(heroParty, enemies);
+			break;
+		default: 
+			return decisionMaker(prompt(`Please, make sure you spell the choice correctly. Attack, Sneak or Persuade?`));
+			break;
+	}
+
+	return result;
+}
+const riddleEncounter = () => {
 	let answer = prompt(`You can see me in water, but I never get wet. What am I?`);
 
 	if(answer.toLowerCase() === `a reflection`|| answer.toLowerCase() === `reflection`) {
 		console.log(`Correct!`);
 		return true;
 	} else {
-		console.log(`YOu got it wrong`);
+		console.log(`You got it wrong`);
 		return false;
 	}
 };

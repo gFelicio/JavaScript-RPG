@@ -59,6 +59,14 @@ class Hero extends BaseCharacter {
 
 	equipNewArmor(newArmor) {
 		this.equippedArmor = newArmor;
+
+		if(this.equippedArmor.attackBarrierBonus) {
+			this.barriers.attack -= this.equippedArmor.attackBarrierBonus;
+		}
+
+		if(newArmor.attackBarrierBonus) {
+			this.barriers.attack += newArmor.attackBarrierBonus;
+		}
 	};
 
 	rest() {
@@ -127,6 +135,7 @@ const checkRace = (hero, race) => {
 class Monster extends BaseCharacter {
 	constructor(name, health, attackBarrier, persuasionBarrier, sneakBarrier, skills, minDamage, maxDamage) {
 		super(name, health, skills);
+		
 		this.barriers.attackBarrier = attackBarrier;
 		this.barriers.persuade = persuasionBarrier;
 		this.barriers.sneak = sneakBarrier;
